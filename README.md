@@ -1,6 +1,6 @@
 ## Reference
     - https://github.com/kaleko/CourseraML
-
+    - https://www.yalewoo.com/andrew_ng_machine_learning_ex1_linear_regression.html
 
 ## Setup
 ```
