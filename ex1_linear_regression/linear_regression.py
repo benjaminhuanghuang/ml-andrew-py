@@ -2,23 +2,24 @@ import numpy as np
 
 import matplotlib
 matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 
 
 # Linear regression with one variable
 datafile = 'data/ex1data1.txt'
-cols = np.loadtxt(datafile,delimiter=',',usecols=(0,1),unpack=True) #Read in comma separated data
+cols = np.loadtxt(datafile, delimiter=',', usecols=(
+    0, 1), unpack=True)  # Read in comma separated data
 #Form the usual "X" matrix and "y" vector
 X = np.transpose(np.array(cols[:-1]))
 y = np.transpose(np.array(cols[-1:]))
-m = y.size # number of training examples
+m = y.size  # number of training examples
 #Insert the usual column of 1's into the "X" matrix
-X = np.insert(X,0,1,axis=1)
+X = np.insert(X, 0, 1, axis=1)
 
 # Plot the data to see what it looks like
-plt.figure(figsize=(10,6))
-plt.plot(X[:,1],y[:,0],'rx',markersize=10)
-plt.grid(True) #Always plot.grid true!
+plt.figure(figsize=(10, 6))
+plt.plot(X[:, 1], y[:, 0], 'rx', markersize=10)
+plt.grid(True)  # Always plot.grid true!
 plt.ylabel('Profit in $10,000s')
 plt.xlabel('Population of City in 10,000s')
 plt.show()
