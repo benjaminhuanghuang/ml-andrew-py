@@ -21,5 +21,6 @@ plt.plot(X[:,1],y[:,0],'rx',markersize=10)
 plt.grid(True) #Always plot.grid true!
 plt.ylabel('Profit in $10,000s')
 plt.xlabel('Population of City in 10,000s')
+plt.show()
 
 # Gradient Descent
