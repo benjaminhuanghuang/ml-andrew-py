@@ -5,23 +5,48 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
-# Linear regression with one variable
-datafile = 'data/ex1data1.txt'
-cols = np.loadtxt(datafile, delimiter=',', usecols=(
-    0, 1), unpack=True)  # Read in comma separated data
-#Form the usual "X" matrix and "y" vector
-X = np.transpose(np.array(cols[:-1]))
-y = np.transpose(np.array(cols[-1:]))
-m = y.size  # number of training examples
-#Insert the usual column of 1's into the "X" matrix
-X = np.insert(X, 0, 1, axis=1)
 
-# Plot the data to see what it looks like
-plt.figure(figsize=(10, 6))
-plt.plot(X[:, 1], y[:, 0], 'rx', markersize=10)
-plt.grid(True)  # Always plot.grid true!
-plt.ylabel('Profit in $10,000s')
-plt.xlabel('Population of City in 10,000s')
-plt.show()
+def computeCost(X, y, theta):
+    inner = np.power(((X * theta.T) - y), 2)
+    return np.sum(inner) / (2 * len(X))
 
-# Gradient Descent
+def gradientDescent(X, y, theta, alpha, iters):
+    temp = np.matrix(np.zeros(theta.shape))
+    parameters = int(theta.ravel().shape[1])
+    cost = np.zeros(iters)
+    
+    for i in range(iters):
+        error = (X * theta.T) - y
+        
+        for j in range(parameters):
+            term = np.multiply(error, X[:,j])
+            temp[0,j] = theta[0,j] - ((alpha / len(X)) * np.sum(term))
+            
+        theta = temp
+        cost[i] = computeCost(X, y, theta)
+        
+    return theta, cost
+
+
+datafile = 'data/ex1data2.txt'
+data = pd.read_csv(datafile, header=None, names=['Population', 'Profit'])
+
+# 在训练集中添加一列，以便我们可以使用向量化的解决方案来计算代价和梯度。
+data.insert(0, 'Ones', 1)
+print(data)
+
+# set X (training data) and y (target variable)
+cols = data2.shape[1]
+X2 = data2.iloc[:,0:cols-1]
+y2 = data2.iloc[:,cols-1:cols]
+
+# convert to matrices and initialize theta
+X2 = np.matrix(X2.values)
+y2 = np.matrix(y2.values)
+theta2 = np.matrix(np.array([0,0,0]))
+
+# perform linear regression on the data set
+g2, cost2 = gradientDescent(X2, y2, theta2, alpha, iters)
+
+# get the cost (error) of the model
+computeCost(X2, y2, g2)
