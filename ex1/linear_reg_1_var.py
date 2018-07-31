@@ -5,23 +5,60 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
-# Linear regression with one variable
+
+def computeCost(X, y, theta):
+    inner = np.power(((X * theta.T) - y), 2)
+    return np.sum(inner) / (2 * len(X))
+
+def gradientDescent(X, y, theta, alpha, iters):
+    temp = np.matrix(np.zeros(theta.shape))
+    parameters = int(theta.ravel().shape[1])
+    cost = np.zeros(iters)
+    
+    for i in range(iters):
+        error = (X * theta.T) - y
+        
+        for j in range(parameters):
+            term = np.multiply(error, X[:,j])
+            temp[0,j] = theta[0,j] - ((alpha / len(X)) * np.sum(term))
+            
+        theta = temp
+        cost[i] = computeCost(X, y, theta)
+        
+    return theta, cost
+
+
 datafile = 'data/ex1data1.txt'
-cols = np.loadtxt(datafile, delimiter=',', usecols=(
-    0, 1), unpack=True)  # Read in comma separated data
-#Form the usual "X" matrix and "y" vector
-X = np.transpose(np.array(cols[:-1]))
-y = np.transpose(np.array(cols[-1:]))
-m = y.size  # number of training examples
-#Insert the usual column of 1's into the "X" matrix
-X = np.insert(X, 0, 1, axis=1)
+data = pd.read_csv(datafile, header=None, names=['Population', 'Profit'])
 
-# Plot the data to see what it looks like
-plt.figure(figsize=(10, 6))
-plt.plot(X[:, 1], y[:, 0], 'rx', markersize=10)
-plt.grid(True)  # Always plot.grid true!
-plt.ylabel('Profit in $10,000s')
-plt.xlabel('Population of City in 10,000s')
+# 在训练集中添加一列，以便我们可以使用向量化的解决方案来计算代价和梯度。
+data.insert(0, 'Ones', 1)
+print(data)
+
+# set X (training data) and y (target variable) 
+cols = data.shape[1]
+X = data.iloc[:,0:cols-1]    #X是所有行，去掉最后一列
+y = data.iloc[:,cols-1:cols] #y是所有行，最后一列
+
+X  =  np.matrix((X.values))
+y  =  np.matrix((y.values))
+theta  =  np.matrix(np.array([0,0]))
+
+alpha = 0.01
+iters = 1000
+
+g, cost = gradientDescent(X, y, theta, alpha, iters)
+
+
+
+x  =  np.linspace(data.Population.min(), data.Population.max(), 100)
+f = g[0, 0] + (g[0, 1] * x)
+
+fig, ax = plt.subplots(figsize=(12,8))
+ax.plot(x, f, 'r', label='Prediction')
+ax.scatter(data.Population, data.Profit, label='Traning Data')
+ax.legend(loc=2)
+ax.set_xlabel('Population')
+ax.set_ylabel('Profit')
+ax.set_title('Predicted Profit vs. Population Size')
 plt.show()
-
-# Gradient Descent

@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 datafile = 'data/ex1data1.txt'
 data = pd.read_csv(datafile, header=None, names=['Population', 'Profit'])
 
-data.head()
+print(data.head())
 
-data.describe()
+print(data.describe())
 
-data.plot(kind='scatter', x='Population', y='Profit', figsize=(12,8))
+data.plot(kind='scatter', x='Population', y='Profit', figsize=(12, 8))
 plt.show()
