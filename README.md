@@ -1,7 +1,7 @@
 ## Reference
     - https://github.com/kaleko/CourseraML
     - https://www.yalewoo.com/andrew_ng_machine_learning_ex1_linear_regression.html
-
+    - https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes
 ## Setup
 ```
 $ virtualenv --system-site-packages -p python3 venv3
